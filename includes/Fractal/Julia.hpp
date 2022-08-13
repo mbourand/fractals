@@ -9,6 +9,8 @@ namespace frctl
 	class Julia : public Fractal
 	{
 	protected:
+		static constexpr int DEFAULT_MAX_ITERATIONS = 500;
+		static constexpr cl_float2 DEFAULT_C = {-0.67, 0.209};
 		int _maxIterations;
 		cl_float2 _c;
 		ezgl::ComputeShader _cs;

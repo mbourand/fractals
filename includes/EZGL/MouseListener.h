@@ -11,7 +11,7 @@ namespace ezgl
 	public:
 		MouseListener();
 		MouseListener(const MouseListener& other);
-		MouseListener& operator=(const MouseListener& other);
+		MouseListener& operator=(const MouseListener& other) = delete;
 		~MouseListener();
 		virtual void onMouseMoved(double x, double y) = 0;
 		virtual void onMouseEntered(int entered) = 0;

@@ -9,7 +9,10 @@ namespace frctl
 	class Mandelbrot : public Fractal
 	{
 	protected:
+		static constexpr int DEFAULT_MAX_ITERATIONS = 1000;
+		static constexpr int DEFAULT_EXPONENT = 2;
 		int _maxIterations;
+		int _exponent;
 		ezgl::ComputeShader _cs;
 
 	public:

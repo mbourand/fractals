@@ -5,7 +5,9 @@
 
 namespace frctl
 {
-	Mandelbrot::Mandelbrot(std::vector<uint8_t>& pixels) : Fractal("Mandelbrot", pixels), _maxIterations(1000)
+	Mandelbrot::Mandelbrot(std::vector<uint8_t>& pixels)
+		: Fractal("Mandelbrot", pixels), _maxIterations(Mandelbrot::DEFAULT_MAX_ITERATIONS),
+		  _exponent(Mandelbrot::DEFAULT_EXPONENT)
 	{
 		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/mandelbrot.cl"}, "compute_fractal");
 	}
@@ -16,10 +18,16 @@ namespace frctl
 		Fractal::operator=(other);
 		_maxIterations = other._maxIterations;
 		_cs = other._cs;
+		_exponent = other._exponent;
 		return *this;
 	}
 
-	FractalController Mandelbrot::init() { return FractalController(this, 0.2, -0.5, 0); }
+	FractalController Mandelbrot::init()
+	{
+		_maxIterations = Mandelbrot::DEFAULT_MAX_ITERATIONS;
+		_exponent = Mandelbrot::DEFAULT_EXPONENT;
+		return FractalController(this, 0.2, -0.5, 0);
+	}
 
 	void Mandelbrot::compute(float zoom, float xOffset, float yOffset)
 	{
@@ -29,11 +37,11 @@ namespace frctl
 												 {255 / 255.0f, 170 / 255.0f, 0 / 255.0f},
 												 {0 / 255.0f, 2 / 255.0f, 0 / 255.0f},
 												 {0 / 255.0f, 7 / 255.0f, 100 / 255.0f}}};
-		static unsigned int nbColors = colors.size();
 
 		if (!requireUpdate)
 			return;
 
+		unsigned int nbColors = colors.size();
 		unsigned int width = ezgl::Window::getWidth();
 		unsigned int height = ezgl::Window::getHeight();
 
@@ -52,6 +60,7 @@ namespace frctl
 		_cs.setArg(6, colorsBuffer);
 		_cs.setArg(7, nbColors);
 		_cs.setArg(8, _maxIterations);
+		_cs.setArg(9, _exponent);
 
 		_cs.run(cl::NDRange(width, height));
 		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(uint8_t), pixels.data());
@@ -66,8 +75,9 @@ namespace frctl
 		fbo.draw();
 		fbo.unbind();
 		ImGui::Begin(name.c_str());
-		if (ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000))
-			requireUpdate = true;
+		ImGui::Text("General");
+		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
+		requireUpdate |= ImGui::SliderInt("Exponent", &_exponent, 1, 20);
 		ImGui::End();
 	}
 }

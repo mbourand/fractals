@@ -1,5 +1,6 @@
 #include "EZGL/MouseListener.h"
 #include <algorithm>
+#include <iostream>
 
 namespace ezgl
 {
@@ -9,17 +10,17 @@ namespace ezgl
 
 	MouseListener::~MouseListener()
 	{
-		auto it = std::remove_if(_instances.begin(), _instances.end(),
-								 [this](MouseListener* a) -> bool { return a == this; });
-		(void)it;
+		for (auto it = MouseListener::_instances.begin(); it != MouseListener::_instances.end(); ++it)
+		{
+			if (this == *it)
+			{
+				MouseListener::_instances.erase(it);
+				break;
+			}
+		}
 	}
 
 	MouseListener::MouseListener(const MouseListener& other) { _instances.push_back(this); }
-	MouseListener& MouseListener::operator=(const MouseListener& other)
-	{
-		_instances.push_back(this);
-		return *this;
-	};
 
 	void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 	{
@@ -30,7 +31,10 @@ namespace ezgl
 	void mousePosCallback(GLFWwindow* window, double x, double y)
 	{
 		for (auto& instance : MouseListener::_instances)
+		{
+			std::cout << instance << std::endl;
 			instance->onMouseMoved(x, y);
+		}
 	}
 
 	void mouseEnterCallback(GLFWwindow* window, int entered)

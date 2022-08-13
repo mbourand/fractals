@@ -12,6 +12,15 @@ namespace frctl
 	{
 	}
 
+	FractalController& FractalController::operator=(const FractalController& other)
+	{
+		zoom = other.zoom;
+		fractal = other.fractal;
+		xOffset = other.xOffset;
+		yOffset = other.yOffset;
+		return *this;
+	}
+
 	void FractalController::onMouseMoved(double x, double y)
 	{
 		if (_grabbing)

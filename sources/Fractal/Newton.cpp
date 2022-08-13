@@ -5,9 +5,13 @@
 
 namespace frctl
 {
-	Newton::Newton(std::vector<uint8_t>& pixels) : Fractal("Newton", pixels), _maxIterations(1000), _a(1)
+	Newton::Newton(std::vector<uint8_t>& pixels)
+		: Fractal("Newton", pixels), _maxIterations(Newton::DEFAULT_MAX_ITERATIONS), _a(Newton::DEFAULT_A)
 	{
 		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/newton.cl"}, "compute_fractal");
+		_points.push_back({1, 0});
+		_points.push_back({-.5, 0.86602});
+		_points.push_back({-.5, -0.86602});
 	}
 
 	Newton::Newton(const Newton& other) : Fractal(other.name, other.pixels) { *this = other; }
@@ -16,24 +20,25 @@ namespace frctl
 		Fractal::operator=(other);
 		_maxIterations = other._maxIterations;
 		_a = other._a;
+		_points = other._points;
 		return *this;
 	}
 
-	FractalController Newton::init() { return FractalController(this, 0.1, 0, 0); };
+	FractalController Newton::init()
+	{
+		_maxIterations = Newton::DEFAULT_MAX_ITERATIONS;
+		_a = Newton::DEFAULT_A;
+		return FractalController(this, 0.1, 0, 0);
+	};
 
 	void Newton::compute(float zoom, float xOffset, float yOffset)
 	{
-		static std::vector<cl_float3> colors = {{{0 / 255.0f, 7 / 255.0f, 100 / 255.0f},
-												 {32 / 255.0f, 107 / 255.0f, 203 / 255.0f},
-												 {237 / 255.0f, 255 / 255.0f, 255 / 255.0f},
-												 {255 / 255.0f, 170 / 255.0f, 0 / 255.0f},
-												 {0 / 255.0f, 2 / 255.0f, 0 / 255.0f},
-												 {0 / 255.0f, 7 / 255.0f, 100 / 255.0f}}};
-		static unsigned int nbColors = colors.size();
+		static std::vector<cl_float3> colors = {{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}};
 
 		if (!requireUpdate)
 			return;
 
+		unsigned int nbColors = colors.size();
 		unsigned int width = ezgl::Window::getWidth();
 		unsigned int height = ezgl::Window::getHeight();
 
@@ -42,6 +47,7 @@ namespace frctl
 
 		cl::Buffer pixelsBuffer = _cs.createBuffer(CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, pixels);
 		cl::Buffer colorsBuffer = _cs.createBuffer(CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, colors);
+		cl::Buffer pointsBuffer = _cs.createBuffer(CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, _points);
 
 		_cs.setArg(0, width);
 		_cs.setArg(1, height);
@@ -53,6 +59,7 @@ namespace frctl
 		_cs.setArg(7, nbColors);
 		_cs.setArg(8, _maxIterations);
 		_cs.setArg(9, _a);
+		_cs.setArg(10, pointsBuffer);
 
 		_cs.run(cl::NDRange(width, height));
 		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(uint8_t), pixels.data());
@@ -63,14 +70,14 @@ namespace frctl
 
 	void Newton::draw()
 	{
+
 		fbo.bind();
 		fbo.draw();
 		fbo.unbind();
 		ImGui::Begin(name.c_str());
-		if (ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000))
-			requireUpdate = true;
-		if (ImGui::SliderFloat("a value", &_a, 0.1, 1.95))
-			requireUpdate = true;
+		ImGui::Text("General");
+		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
+		requireUpdate |= ImGui::SliderFloat("a value", &_a, 0.1, 1.95);
 		ImGui::End();
 	}
 }

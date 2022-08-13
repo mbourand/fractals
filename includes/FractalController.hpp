@@ -21,7 +21,7 @@ namespace frctl
 
 		FractalController() = default;
 		FractalController(const FractalController& other) = default;
-		FractalController& operator=(const FractalController& other) = default;
+		FractalController& operator=(const FractalController& other);
 		FractalController(Fractal* fractal, float zoom, float xOffset, float yOffset);
 
 		void onMouseMoved(double x, double y);

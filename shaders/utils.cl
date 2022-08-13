@@ -15,8 +15,19 @@ double2 square(double2 z) {
 	return (double2){z.x * z.x - z.y * z.y, 2 * z.x * z.y};
 }
 
+
 double2 multiply(double2 a, double2 b) {
 	return (double2){a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x};
+}
+
+double2 power(double2 z, unsigned int n)
+{
+	if (n == 0)
+		return (double2){1, 0};
+	double2 ret = z;
+	for (int i = 0; i < n - 1; i++)
+		ret = multiply(ret, z);
+	return ret;
 }
 
 double2 divide(double2 a, double2 b) {
@@ -29,6 +40,10 @@ double2 divide(double2 a, double2 b) {
 
 double2 cube(double2 z) {
 	return multiply(square(z), z);
+}
+
+double absolute(double2 z) {
+	return sqrt(z.x * z.x + z.y * z.y);
 }
 
 float3 getColor(unsigned int iterations, int maxIterations, float3* colors, unsigned int nbColors) {
