@@ -8,7 +8,6 @@ namespace frctl
 	{
 	protected:
 		bool _active = true;
-		bool _requireUpdate = false;
 		int _displayedFractalId = 0;
 		std::vector<Fractal*> _fractals;
 		std::vector<const char*> _names;
@@ -21,7 +20,7 @@ namespace frctl
 
 		bool requiresUpdate();
 
-		void draw();
-		void update();
+		bool update();
+		Fractal* getSelectedFractal() const;
 	};
 }

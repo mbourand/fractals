@@ -9,22 +9,17 @@ namespace frctl
 	class Julia : public Fractal
 	{
 	protected:
-		bool _requireUpdate;
-		ezgl::Texture _texture;
+		int _maxIterations;
+		cl_float2 _c;
+		ezgl::ComputeShader _cs;
 
 	public:
-		int maxIterations;
-		cl_float2 c;
-		ezgl::ComputeShader cs;
-		std::vector<uint8_t> pixels;
-		FractalController controller;
-
-		Julia();
+		Julia(std::vector<uint8_t>& pixels);
 		Julia(const Julia& other);
 		Julia& operator=(const Julia& other);
 
-		void compute();
+		FractalController init();
+		void compute(float zoom, float xOffset, float yOffset);
 		void draw();
-		void dispose();
 	};
 }

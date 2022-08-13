@@ -1,4 +1,5 @@
 #include "FractalController.hpp"
+#include "Fractal.hpp"
 #include "utils.h"
 #include "EZGL/Window.h"
 #include <iostream>
@@ -6,8 +7,8 @@
 
 namespace frctl
 {
-	FractalController::FractalController(float zoom, float xOffset, float yOffset)
-		: zoom(zoom), _requireUpdate(false), _grabbing(false), xOffset(xOffset), yOffset(yOffset)
+	FractalController::FractalController(Fractal* fractal, float zoom, float xOffset, float yOffset)
+		: zoom(zoom), fractal(fractal), _grabbing(false), xOffset(xOffset), yOffset(yOffset)
 	{
 	}
 
@@ -21,7 +22,7 @@ namespace frctl
 														  ezgl::Window::getHeight(), xOffset, yOffset);
 			xOffset -= newPosInFractal.first - posInFractal.first;
 			yOffset += newPosInFractal.second - posInFractal.second;
-			_requireUpdate = true;
+			fractal->requireUpdate = true;
 		}
 
 		_mouseX = x;
@@ -50,14 +51,14 @@ namespace frctl
 		auto mousePos = frctl::screenToFractal(_mouseX, _mouseY, zoom, ezgl::Window::getWidth(),
 											   ezgl::Window::getHeight(), xOffset, yOffset);
 		zoom *= (yoffset > 0 ? 1.1 : 1 / 1.1);
-		zoom = std::max(0.2f, zoom);
+		zoom = std::max(0.01f, zoom);
 		auto newMousePos = frctl::screenToFractal(_mouseX, _mouseY, zoom, ezgl::Window::getWidth(),
 												  ezgl::Window::getHeight(), xOffset, yOffset);
 
 		xOffset -= (newMousePos.first - mousePos.first) * (yoffset > 0 ? 1 : -1);
 		yOffset -= (newMousePos.second - mousePos.second) * (yoffset > 0 ? -1 : 1);
 
-		_requireUpdate = true;
+		fractal->requireUpdate = true;
 	}
 
 	void FractalController::update(float deltaTime) {}

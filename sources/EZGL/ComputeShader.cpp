@@ -3,16 +3,21 @@
 
 namespace ezgl
 {
-	std::string ComputeShader::_getProgramSource(const std::string& filename)
+	std::string ComputeShader::_getProgramSource(const std::vector<std::string>& filenames)
 	{
-		std::ifstream file(filename);
-		if (!file.good() || !file.is_open())
-			throw std::runtime_error("Could not open kernel file: " + filename);
-		std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-		return str;
+		std::string source;
+		for (const auto& filename : filenames)
+		{
+			std::ifstream file(filename);
+			if (!file.good() || !file.is_open())
+				throw std::runtime_error("Could not open kernel file: " + filename);
+			std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+			source += str;
+		}
+		return source;
 	}
 
-	ComputeShader::ComputeShader(const std::string& filename, const std::string& kernel)
+	ComputeShader::ComputeShader(const std::vector<std::string>& filenames, const std::string& kernel)
 	{
 		std::vector<cl::Device> devices;
 		cl::Platform::getDefault().getDevices(CL_DEVICE_TYPE_GPU, &devices);
@@ -21,7 +26,7 @@ namespace ezgl
 
 		_device = devices.front();
 		_context = cl::Context(_device);
-		std::string source = _getProgramSource(filename);
+		std::string source = _getProgramSource(filenames);
 		cl::Program::Sources sources(1, std::make_pair(source.c_str(), source.size()));
 		_program = cl::Program(_context, sources);
 

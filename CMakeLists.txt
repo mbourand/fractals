@@ -9,8 +9,10 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(${PROJECT_NAME}
 	sources/main.cpp
 	sources/FractalController.cpp
+	sources/Fractal/Fractal.cpp
 	sources/Fractal/Mandelbrot.cpp
 	sources/Fractal/Julia.cpp
+	sources/Fractal/Newton.cpp
 	sources/Menu.cpp
 	sources/utils.cpp
 	sources/EZGL/FlyController.cpp

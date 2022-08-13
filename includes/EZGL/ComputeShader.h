@@ -18,12 +18,12 @@ namespace ezgl
 		cl::CommandQueue commands;
 
 	private:
-		std::string _getProgramSource(const std::string& filename);
+		std::string _getProgramSource(const std::vector<std::string>& filenames);
 
 	public:
 		ComputeShader() = default;
 		ComputeShader(const ComputeShader& other) = default;
-		ComputeShader(const std::string& filename, const std::string& kernel);
+		ComputeShader(const std::vector<std::string>& filenames, const std::string& kernel);
 		ComputeShader& operator=(const ComputeShader& other) = default;
 
 		template<typename T> cl::Buffer createBuffer(cl_mem_flags flags, std::vector<T>& buffer)

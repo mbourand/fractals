@@ -4,10 +4,11 @@
 
 namespace frctl
 {
+	class Fractal;
+
 	class FractalController : public ezgl::MouseListener
 	{
 	protected:
-		bool _requireUpdate;
 		bool _grabbing;
 		double _mouseX;
 		double _mouseY;
@@ -16,18 +17,12 @@ namespace frctl
 		float zoom;
 		float xOffset;
 		float yOffset;
+		Fractal* fractal;
 
 		FractalController() = default;
 		FractalController(const FractalController& other) = default;
 		FractalController& operator=(const FractalController& other) = default;
-		FractalController(float zoom, float xOffset, float yOffset);
-
-		inline bool requiresUpdate()
-		{
-			bool tmp = _requireUpdate;
-			_requireUpdate = false;
-			return tmp;
-		}
+		FractalController(Fractal* fractal, float zoom, float xOffset, float yOffset);
 
 		void onMouseMoved(double x, double y);
 		void onMouseEntered(int entered);

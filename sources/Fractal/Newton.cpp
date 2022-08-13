@@ -1,27 +1,27 @@
-#include "Mandelbrot.hpp"
+#include "Newton.hpp"
 #include "myimgui.h"
 #include <CL/cl.hpp>
 #include "EZGL/Window.h"
 
 namespace frctl
 {
-	Mandelbrot::Mandelbrot(std::vector<uint8_t>& pixels) : Fractal("Mandelbrot", pixels), _maxIterations(1000)
+	Newton::Newton(std::vector<uint8_t>& pixels) : Fractal("Newton", pixels), _maxIterations(1000), _a(1)
 	{
-		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/mandelbrot.cl"}, "compute_fractal");
+		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/newton.cl"}, "compute_fractal");
 	}
 
-	Mandelbrot::Mandelbrot(const Mandelbrot& other) : Fractal(other.name, other.pixels) { *this = other; }
-	Mandelbrot& Mandelbrot::operator=(const Mandelbrot& other)
+	Newton::Newton(const Newton& other) : Fractal(other.name, other.pixels) { *this = other; }
+	Newton& Newton::operator=(const Newton& other)
 	{
 		Fractal::operator=(other);
 		_maxIterations = other._maxIterations;
-		_cs = other._cs;
+		_a = other._a;
 		return *this;
 	}
 
-	FractalController Mandelbrot::init() { return FractalController(this, 0.2, -0.5, 0); }
+	FractalController Newton::init() { return FractalController(this, 0.1, 0, 0); };
 
-	void Mandelbrot::compute(float zoom, float xOffset, float yOffset)
+	void Newton::compute(float zoom, float xOffset, float yOffset)
 	{
 		static std::vector<cl_float3> colors = {{{0 / 255.0f, 7 / 255.0f, 100 / 255.0f},
 												 {32 / 255.0f, 107 / 255.0f, 203 / 255.0f},
@@ -52,6 +52,7 @@ namespace frctl
 		_cs.setArg(6, colorsBuffer);
 		_cs.setArg(7, nbColors);
 		_cs.setArg(8, _maxIterations);
+		_cs.setArg(9, _a);
 
 		_cs.run(cl::NDRange(width, height));
 		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(uint8_t), pixels.data());
@@ -60,13 +61,15 @@ namespace frctl
 		requireUpdate = false;
 	}
 
-	void Mandelbrot::draw()
+	void Newton::draw()
 	{
 		fbo.bind();
 		fbo.draw();
 		fbo.unbind();
 		ImGui::Begin(name.c_str());
 		if (ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000))
+			requireUpdate = true;
+		if (ImGui::SliderFloat("a value", &_a, 0.1, 1.95))
 			requireUpdate = true;
 		ImGui::End();
 	}

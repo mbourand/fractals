@@ -5,15 +5,21 @@ namespace ezgl
 {
 	std::vector<MouseListener*> MouseListener::_instances;
 
-	MouseListener::MouseListener()
-	{
-		_instances.push_back(this);
-	}
+	MouseListener::MouseListener() { _instances.push_back(this); }
 
 	MouseListener::~MouseListener()
 	{
-		std::remove_if(_instances.begin(), _instances.end(), [this](MouseListener* a) -> bool { return a == this; });
+		auto it = std::remove_if(_instances.begin(), _instances.end(),
+								 [this](MouseListener* a) -> bool { return a == this; });
+		(void)it;
 	}
+
+	MouseListener::MouseListener(const MouseListener& other) { _instances.push_back(this); }
+	MouseListener& MouseListener::operator=(const MouseListener& other)
+	{
+		_instances.push_back(this);
+		return *this;
+	};
 
 	void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 	{
@@ -39,12 +45,12 @@ namespace ezgl
 		{
 			switch (action)
 			{
-			case GLFW_PRESS: 
-				instance->onMouseButtonPressed(button, mods);
-				break;
-			case GLFW_RELEASE:
-				instance->onMouseButtonReleased(button, mods);
-				break;
+				case GLFW_PRESS:
+					instance->onMouseButtonPressed(button, mods);
+					break;
+				case GLFW_RELEASE:
+					instance->onMouseButtonReleased(button, mods);
+					break;
 			}
 		}
 	}
