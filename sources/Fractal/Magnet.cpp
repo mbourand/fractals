@@ -74,10 +74,8 @@ namespace frctl
 		fbo.unbind();
 		ImGui::Begin(name.c_str());
 		ImGui::Text("General");
-		if (ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000))
-			requireUpdate = true;
-		if (ImGui::SliderFloat2("c value", reinterpret_cast<float*>(&_c), -10, 10))
-			requireUpdate = true;
+		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
+		requireUpdate |= ImGui::SliderFloat2("c value", reinterpret_cast<float*>(&_c), -10, 10);
 		ImGui::End();
 	}
 }

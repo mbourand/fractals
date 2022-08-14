@@ -9,9 +9,9 @@ namespace frctl
 	class Buddhabrot : public Fractal
 	{
 	protected:
-		static constexpr int DEFAULT_MAX_ITERATIONS = 1500;
-		static constexpr int DEFAULT_POINT_AMOUNT = 500000;
-		static constexpr float DEFAULT_BRIGHTNESS = 4.0;
+		static constexpr int DEFAULT_MAX_ITERATIONS = 1700;
+		static constexpr int DEFAULT_POINT_AMOUNT = 900000;
+		static constexpr float DEFAULT_BRIGHTNESS = 3.5;
 
 		float _brightness;
 		int _nbPoints;

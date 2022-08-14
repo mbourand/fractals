@@ -74,10 +74,30 @@ namespace frctl
 		fbo.unbind();
 		ImGui::Begin(name.c_str());
 		ImGui::Text("General");
-		if (ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000))
+		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
+		requireUpdate |= ImGui::SliderFloat2("c value", reinterpret_cast<float*>(&_c), -1, 1);
+		ImGui::Spacing();
+		ImGui::Text("Presets");
+		if (ImGui::Button("Default"))
+		{
+			init();
 			requireUpdate = true;
-		if (ImGui::SliderFloat2("c value", reinterpret_cast<float*>(&_c), -1, 1))
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Preset 2"))
+		{
+			_maxIterations = 1000;
+			_c = {-0.39, -0.643};
 			requireUpdate = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Preset 3"))
+		{
+			_maxIterations = 1350;
+			_c = {-0.514, 0.524};
+			requireUpdate = true;
+		}
 		ImGui::End();
 	}
 }

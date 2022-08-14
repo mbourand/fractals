@@ -88,8 +88,45 @@ namespace frctl
 		ImGui::Begin(name.c_str());
 		ImGui::Text("General");
 		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 1000, 20000);
-		requireUpdate |= ImGui::SliderInt("Point Amount", &_nbPoints, 100000, 10000000);
-		requireUpdate |= ImGui::SliderFloat("Brightness", &_brightness, 1, 40);
+		requireUpdate |= ImGui::SliderInt("Point Amount", &_nbPoints, 100000, 50000000);
+		requireUpdate |= ImGui::SliderFloat("Brightness", &_brightness, 0.01, 20);
+		if (ImGui::Button("Default"))
+		{
+			init();
+			requireUpdate = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Medium"))
+		{
+			_maxIterations = 7594;
+			_nbPoints = 1000000;
+			_brightness = 3.67f;
+			requireUpdate = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("High"))
+		{
+			_maxIterations = 10000;
+			_nbPoints = 3000000;
+			_brightness = 2.04f;
+			requireUpdate = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Ultra"))
+		{
+			_maxIterations = 10000;
+			_nbPoints = 10000000;
+			_brightness = 0.373f;
+			requireUpdate = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Max (Can take a while)"))
+		{
+			_maxIterations = 10000;
+			_nbPoints = 30000000;
+			_brightness = 0.13f;
+			requireUpdate = true;
+		}
 		ImGui::End();
 	}
 }

@@ -7,7 +7,6 @@ namespace frctl
 	class Menu
 	{
 	protected:
-		bool _active = true;
 		int _displayedFractalId = 0;
 		std::vector<Fractal*> _fractals;
 		std::vector<const char*> _names;

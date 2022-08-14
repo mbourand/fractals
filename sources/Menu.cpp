@@ -7,7 +7,7 @@
 
 namespace frctl
 {
-	Menu::Menu(const std::vector<Fractal*>& fractals) : _active(true), _displayedFractalId(0), _fractals(fractals)
+	Menu::Menu(const std::vector<Fractal*>& fractals) : _displayedFractalId(0), _fractals(fractals)
 	{
 		for (Fractal* frac : _fractals)
 			_names.push_back(frac->name.c_str());
@@ -16,9 +16,9 @@ namespace frctl
 	bool Menu::update()
 	{
 		bool changed = false;
-		ImGui::Begin("Fractal Settings", &_active);
+		ImGui::Begin("Fractal Settings");
 		auto currentFractal = _displayedFractalId;
-		if (ImGui::Combo("Displayed Fractal", &_displayedFractalId, _names.data(), _names.size(), 5))
+		if (ImGui::Combo("Displayed Fractal", &_displayedFractalId, _names.data(), _names.size()))
 		{
 			changed = true;
 			getSelectedFractal()->requireUpdate = true;
