@@ -54,7 +54,7 @@ namespace frctl
 
 	void FractalController::onMouseScroll(double xoffset, double yoffset)
 	{
-		if (_grabbing)
+		if (ezgl::Window::mouseIsOnImGuiElement() || _grabbing)
 			return;
 
 		auto mousePos = frctl::screenToFractal(_mouseX, _mouseY, zoom, ezgl::Window::getWidth(),

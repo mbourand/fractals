@@ -31,10 +31,7 @@ namespace ezgl
 	void mousePosCallback(GLFWwindow* window, double x, double y)
 	{
 		for (auto& instance : MouseListener::_instances)
-		{
-			std::cout << instance << std::endl;
 			instance->onMouseMoved(x, y);
-		}
 	}
 
 	void mouseEnterCallback(GLFWwindow* window, int entered)

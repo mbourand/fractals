@@ -7,6 +7,14 @@ double2 getPointFromPixel(unsigned int width, unsigned int height, unsigned int 
 	return (double2){xOffset + xRatio * 1 / zoom, yOffset + yRatio * (1 / zoom / aspectRatio)};
 }
 
+int2 getPixelFromPoint(unsigned int width, unsigned int height, double x, double y, float xOffset, float yOffset, float zoom) {
+	double aspectRatio = width / (float)(height);
+
+	x = ((x - xOffset) * zoom + 0.5) * width;
+	y = height - ((y - yOffset) * zoom * aspectRatio + 0.5) * height;
+	return (int2){(int)x, (int)y};
+}
+
 double dbl_abs(double d) {
 	return d < 0 ? -d : d;
 }

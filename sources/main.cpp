@@ -13,6 +13,8 @@
 #include "Julia.hpp"
 #include "Newton.hpp"
 #include "Phoenix.hpp"
+#include "Magnet.hpp"
+#include "Buddhabrot.hpp"
 
 int main()
 {
@@ -33,6 +35,8 @@ int main()
 		fractals.push_back(new frctl::Julia(pixels));
 		fractals.push_back(new frctl::Newton(pixels));
 		fractals.push_back(new frctl::Phoenix(pixels));
+		fractals.push_back(new frctl::Magnet(pixels));
+		fractals.push_back(new frctl::Buddhabrot(pixels));
 
 		frctl::Menu menu(fractals);
 		frctl::FractalController controller = menu.getSelectedFractal()->init();

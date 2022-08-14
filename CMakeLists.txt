@@ -11,7 +11,9 @@ add_executable(${PROJECT_NAME}
 	sources/FractalController.cpp
 	sources/Fractal/Fractal.cpp
 	sources/Fractal/Mandelbrot.cpp
+	sources/Fractal/Buddhabrot.cpp
 	sources/Fractal/Julia.cpp
+	sources/Fractal/Magnet.cpp
 	sources/Fractal/Phoenix.cpp
 	sources/Fractal/Newton.cpp
 	sources/Menu.cpp
