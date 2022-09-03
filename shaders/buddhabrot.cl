@@ -1,4 +1,4 @@
-__kernel void compute_fractal(unsigned int width, unsigned int height, float zoom, float xOffset, float yOffset, __global float *pixels, __global double2* points, int maxIterations, float brightness)
+__kernel void compute_fractal(unsigned int width, unsigned int height, float zoom, float xOffset, float yOffset, __global float *pixels, int colorChannel, __global double2* points, int maxIterations, double brightness)
 {
 	unsigned int pos = get_global_id(0);
 	double2 point = points[pos];
@@ -23,8 +23,11 @@ __kernel void compute_fractal(unsigned int width, unsigned int height, float zoo
 			int2 pixel = getPixelFromPoint(width, height, z.x, z.y, xOffset, yOffset, zoom);
 			if (pixel.x < 0 || pixel.y < 0 || pixel.x >= width || pixel.y >= height)
 				continue;
-			unsigned int pixelIndex = pixel.y * width + pixel.x;
-			pixels[pixelIndex] = min(pixels[pixelIndex] + (brightness / 100.0f), 1.0f);
+			unsigned int pixelIndex = (pixel.y * width + pixel.x) * 3 + colorChannel;
+			pixels[pixelIndex] = min(pixels[pixelIndex] + (brightness / 10000.0), 1.0);
+			pixelIndex = ((height - 1 - pixel.y) * width + pixel.x) * 3 + colorChannel;
+			pixels[pixelIndex] = min(pixels[pixelIndex] + (brightness / 10000.0), 1.0);
+
 		}
 	}
 }

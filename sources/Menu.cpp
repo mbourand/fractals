@@ -16,14 +16,12 @@ namespace frctl
 	bool Menu::update()
 	{
 		bool changed = false;
-		ImGui::Begin("Fractal Settings");
 		auto currentFractal = _displayedFractalId;
 		if (ImGui::Combo("Displayed Fractal", &_displayedFractalId, _names.data(), _names.size()))
 		{
 			changed = true;
 			getSelectedFractal()->requireUpdate = true;
 		}
-		ImGui::End();
 		return changed;
 	}
 

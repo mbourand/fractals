@@ -51,7 +51,7 @@ namespace ezgl
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO();
-		(void)io;
+		io.IniFilename = nullptr;
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(_window, true);
 		ImGui_ImplOpenGL3_Init("#version 460");
@@ -69,6 +69,13 @@ namespace ezgl
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
 	}
+
+	void Window::beginMenu(const std::string& name)
+	{
+		ImGui::Begin(name.c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	}
+
+	void Window::endMenu() { ImGui::End(); }
 
 	void Window::update()
 	{

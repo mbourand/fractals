@@ -16,7 +16,7 @@ namespace frctl
 		ezgl::ComputeShader _cs;
 
 	public:
-		Mandelbrot(std::vector<uint8_t>& pixels);
+		Mandelbrot(std::vector<float>& pixels);
 		Mandelbrot(const Mandelbrot& other);
 		Mandelbrot& operator=(const Mandelbrot& other);
 

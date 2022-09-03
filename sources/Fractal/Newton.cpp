@@ -5,7 +5,7 @@
 
 namespace frctl
 {
-	Newton::Newton(std::vector<uint8_t>& pixels)
+	Newton::Newton(std::vector<float>& pixels)
 		: Fractal("Newton", pixels), _maxIterations(Newton::DEFAULT_MAX_ITERATIONS), _a(Newton::DEFAULT_A)
 	{
 		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/newton.cl"}, "compute_fractal");
@@ -62,7 +62,7 @@ namespace frctl
 		_cs.setArg(10, pointsBuffer);
 
 		_cs.run(cl::NDRange(width, height));
-		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(uint8_t), pixels.data());
+		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(float), pixels.data());
 		texture = ezgl::Texture(width, height, pixels);
 		fbo.setTexture(texture);
 		requireUpdate = false;
@@ -74,10 +74,9 @@ namespace frctl
 		fbo.bind();
 		fbo.draw();
 		fbo.unbind();
-		ImGui::Begin(name.c_str());
-		ImGui::Text("General");
+		ImGui::Separator();
+		ImGui::Text(name.c_str());
 		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
 		requireUpdate |= ImGui::SliderFloat("a value", &_a, 0.1, 1.95);
-		ImGui::End();
 	}
 }

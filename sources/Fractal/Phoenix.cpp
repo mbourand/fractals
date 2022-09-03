@@ -5,7 +5,7 @@
 
 namespace frctl
 {
-	Phoenix::Phoenix(std::vector<uint8_t>& pixels)
+	Phoenix::Phoenix(std::vector<float>& pixels)
 		: Fractal("Phoenix", pixels), _maxIterations(Phoenix::DEFAULT_MAX_ITERATIONS), _c(Phoenix::DEFAULT_C),
 		  _p(Phoenix::DEFAULT_P)
 	{
@@ -65,7 +65,7 @@ namespace frctl
 		_cs.setArg(10, _p);
 
 		_cs.run(cl::NDRange(width, height));
-		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(uint8_t), pixels.data());
+		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(float), pixels.data());
 		texture = ezgl::Texture(width, height, pixels);
 		fbo.setTexture(texture);
 		requireUpdate = false;
@@ -76,8 +76,8 @@ namespace frctl
 		fbo.bind();
 		fbo.draw();
 		fbo.unbind();
-		ImGui::Begin(name.c_str());
-		ImGui::Text("General");
+		ImGui::Separator();
+		ImGui::Text(name.c_str());
 		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
 		requireUpdate |= ImGui::SliderFloat2("c value", reinterpret_cast<float*>(&_c), -1, 1);
 		requireUpdate |= ImGui::SliderFloat2("p value", reinterpret_cast<float*>(&_p), -1, 1);
@@ -96,6 +96,5 @@ namespace frctl
 			_p = {0, 0.01};
 			requireUpdate = true;
 		}
-		ImGui::End();
 	}
 }

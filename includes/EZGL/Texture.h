@@ -15,7 +15,7 @@ namespace ezgl
 
 	public:
 		Texture() = default;
-		Texture(unsigned int width, unsigned int height, std::vector<unsigned char> pixels);
+		Texture(unsigned int width, unsigned int height, const std::vector<float>& pixels);
 		Texture(const Texture& other) = default;
 		Texture& operator=(const Texture& other) = default;
 

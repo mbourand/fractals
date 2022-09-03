@@ -18,6 +18,8 @@ namespace ezgl
 		static void terminate();
 
 		static void clear();
+		static void beginMenu(const std::string& name);
+		static void endMenu();
 		static void pollEvents();
 		static void update();
 		static void display();

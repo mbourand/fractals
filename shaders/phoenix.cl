@@ -1,4 +1,4 @@
-__kernel void compute_fractal(unsigned int width, unsigned int height, float zoom, float xOffset, float yOffset, __global unsigned char *pixels, __global float3* colors, unsigned int nbColors, int maxIterations, float2 c, float2 p)
+__kernel void compute_fractal(unsigned int width, unsigned int height, float zoom, float xOffset, float yOffset, __global float *pixels, __global float3* colors, unsigned int nbColors, int maxIterations, float2 c, float2 p)
 {
 	unsigned int x = get_global_id(0);
 	unsigned int y = get_global_id(1);
@@ -24,7 +24,7 @@ __kernel void compute_fractal(unsigned int width, unsigned int height, float zoo
 		}
 		prevZ = tmp;
 	}
-	pixels[pos] = color.x * 255;
-	pixels[pos + 1] = color.y * 255;
-	pixels[pos + 2] = color.z * 255;
+	pixels[pos] = color.x;
+	pixels[pos + 1] = color.y;
+	pixels[pos + 2] = color.z;
 }

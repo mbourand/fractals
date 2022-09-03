@@ -7,8 +7,8 @@
 
 namespace frctl
 {
-	FractalController::FractalController(Fractal* fractal, float zoom, float xOffset, float yOffset)
-		: zoom(zoom), fractal(fractal), _grabbing(false), xOffset(xOffset), yOffset(yOffset)
+	FractalController::FractalController(Fractal* fractal, float zoom, float xOffset, float yOffset, bool enable)
+		: zoom(zoom), fractal(fractal), _grabbing(false), xOffset(xOffset), yOffset(yOffset), enable(enable)
 	{
 	}
 
@@ -18,11 +18,14 @@ namespace frctl
 		fractal = other.fractal;
 		xOffset = other.xOffset;
 		yOffset = other.yOffset;
+		enable = other.enable;
 		return *this;
 	}
 
 	void FractalController::onMouseMoved(double x, double y)
 	{
+		if (!enable)
+			return;
 		if (_grabbing)
 		{
 			auto posInFractal = frctl::screenToFractal(_mouseX, _mouseY, zoom, ezgl::Window::getWidth(),
@@ -41,20 +44,20 @@ namespace frctl
 	void FractalController::onMouseEntered(int entered) {}
 	void FractalController::onMouseButtonPressed(int button, int mods)
 	{
-		if (ezgl::Window::mouseIsOnImGuiElement())
+		if (!enable || ezgl::Window::mouseIsOnImGuiElement())
 			return;
 		if (button == GLFW_MOUSE_BUTTON_1)
 			_grabbing = true;
 	}
 	void FractalController::onMouseButtonReleased(int button, int mods)
 	{
-		if (button == GLFW_MOUSE_BUTTON_1)
+		if (!enable || button == GLFW_MOUSE_BUTTON_1)
 			_grabbing = false;
 	}
 
 	void FractalController::onMouseScroll(double xoffset, double yoffset)
 	{
-		if (ezgl::Window::mouseIsOnImGuiElement() || _grabbing)
+		if (!enable || ezgl::Window::mouseIsOnImGuiElement() || _grabbing)
 			return;
 
 		auto mousePos = frctl::screenToFractal(_mouseX, _mouseY, zoom, ezgl::Window::getWidth(),

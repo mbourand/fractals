@@ -13,11 +13,11 @@ namespace frctl
 	public:
 		std::string name;
 		ezgl::FrameBufferObject fbo;
-		std::vector<uint8_t>& pixels;
+		std::vector<float>& pixels;
 		ezgl::Texture texture;
 		bool requireUpdate;
 
-		Fractal(const std::string& name, std::vector<uint8_t>& pixels);
+		Fractal(const std::string& name, std::vector<float>& pixels);
 		Fractal& operator=(const Fractal& other);
 
 		virtual void compute(float zoom, float xOffset, float yOffset) = 0;

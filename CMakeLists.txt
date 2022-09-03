@@ -4,6 +4,10 @@ project(fractals)
 
 set(CMAKE_CXX_STANDARD 20)
 
+if(MSVC)
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+endif()
+
 # Sources
 
 add_executable(${PROJECT_NAME}
@@ -13,7 +17,6 @@ add_executable(${PROJECT_NAME}
 	sources/Fractal/Mandelbrot.cpp
 	sources/Fractal/Buddhabrot.cpp
 	sources/Fractal/Julia.cpp
-	sources/Fractal/Magnet.cpp
 	sources/Fractal/Phoenix.cpp
 	sources/Fractal/Newton.cpp
 	sources/Menu.cpp

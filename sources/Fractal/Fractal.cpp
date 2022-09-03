@@ -3,7 +3,7 @@
 
 namespace frctl
 {
-	Fractal::Fractal(const std::string& name, std::vector<uint8_t>& pixels)
+	Fractal::Fractal(const std::string& name, std::vector<float>& pixels)
 		: name(name), pixels(pixels), requireUpdate(true)
 	{
 	}

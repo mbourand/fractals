@@ -5,7 +5,7 @@
 
 namespace frctl
 {
-	Julia::Julia(std::vector<uint8_t>& pixels)
+	Julia::Julia(std::vector<float>& pixels)
 		: Fractal("Julia", pixels), _maxIterations(Julia::DEFAULT_MAX_ITERATIONS), _c(Julia::DEFAULT_C)
 	{
 		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/julia.cl"}, "compute_fractal");
@@ -61,7 +61,7 @@ namespace frctl
 		_cs.setArg(9, _c);
 
 		_cs.run(cl::NDRange(width, height));
-		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(uint8_t), pixels.data());
+		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(float), pixels.data());
 		texture = ezgl::Texture(width, height, pixels);
 		fbo.setTexture(texture);
 		requireUpdate = false;
@@ -72,8 +72,8 @@ namespace frctl
 		fbo.bind();
 		fbo.draw();
 		fbo.unbind();
-		ImGui::Begin(name.c_str());
-		ImGui::Text("General");
+		ImGui::Separator();
+		ImGui::Text(name.c_str());
 		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
 		requireUpdate |= ImGui::SliderFloat2("c value", reinterpret_cast<float*>(&_c), -1, 1);
 		ImGui::Spacing();
@@ -98,6 +98,12 @@ namespace frctl
 			_c = {-0.514, 0.524};
 			requireUpdate = true;
 		}
-		ImGui::End();
+		ImGui::SameLine();
+		if (ImGui::Button("Preset 4"))
+		{
+			_maxIterations = 1350;
+			_c = {0.28, 0.528};
+			requireUpdate = true;
+		}
 	}
 }

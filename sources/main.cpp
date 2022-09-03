@@ -13,7 +13,6 @@
 #include "Julia.hpp"
 #include "Newton.hpp"
 #include "Phoenix.hpp"
-#include "Magnet.hpp"
 #include "Buddhabrot.hpp"
 
 int main()
@@ -28,14 +27,13 @@ int main()
 
 	try
 	{
-		std::vector<uint8_t> pixels;
+		std::vector<float> pixels;
 
 		std::vector<frctl::Fractal*> fractals;
 		fractals.push_back(new frctl::Mandelbrot(pixels));
 		fractals.push_back(new frctl::Julia(pixels));
 		fractals.push_back(new frctl::Newton(pixels));
 		fractals.push_back(new frctl::Phoenix(pixels));
-		fractals.push_back(new frctl::Magnet(pixels));
 		fractals.push_back(new frctl::Buddhabrot(pixels));
 
 		frctl::Menu menu(fractals);
@@ -44,11 +42,13 @@ int main()
 		while (!ezgl::Window::shouldClose())
 		{
 			ezgl::Window::update();
-			menu.getSelectedFractal()->compute(controller.zoom, controller.xOffset, controller.yOffset);
 			ezgl::Window::clear();
-			menu.getSelectedFractal()->draw();
+			ezgl::Window::beginMenu("Settings");
 			if (menu.update())
 				controller = menu.getSelectedFractal()->init();
+			menu.getSelectedFractal()->compute(controller.zoom, controller.xOffset, controller.yOffset);
+			menu.getSelectedFractal()->draw();
+			ezgl::Window::endMenu();
 			ezgl::Window::display();
 			ezgl::Window::pollEvents();
 		}

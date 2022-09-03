@@ -19,7 +19,7 @@ namespace frctl
 		ezgl::ComputeShader _cs;
 
 	public:
-		Phoenix(std::vector<uint8_t>& pixels);
+		Phoenix(std::vector<float>& pixels);
 		Phoenix(const Phoenix& other);
 		Phoenix& operator=(const Phoenix& other);
 

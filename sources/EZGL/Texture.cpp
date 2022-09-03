@@ -4,7 +4,7 @@
 
 namespace ezgl
 {
-	Texture::Texture(unsigned int width, unsigned int height, std::vector<unsigned char> pixels)
+	Texture::Texture(unsigned int width, unsigned int height, const std::vector<float>& pixels)
 	{
 		_width = width;
 		_height = height;
@@ -14,7 +14,7 @@ namespace ezgl
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_FLOAT, pixels.data());
 		glGenerateMipmap(GL_TEXTURE_2D);
 		this->unbind();
 	}

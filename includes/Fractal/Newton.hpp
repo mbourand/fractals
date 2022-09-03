@@ -17,7 +17,7 @@ namespace frctl
 		std::vector<cl_float2> _points;
 
 	public:
-		Newton(std::vector<uint8_t>& pixels);
+		Newton(std::vector<float>& pixels);
 		Newton(const Newton& other);
 		Newton& operator=(const Newton& other);
 

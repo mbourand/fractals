@@ -5,7 +5,7 @@
 
 namespace frctl
 {
-	Mandelbrot::Mandelbrot(std::vector<uint8_t>& pixels)
+	Mandelbrot::Mandelbrot(std::vector<float>& pixels)
 		: Fractal("Mandelbrot", pixels), _maxIterations(Mandelbrot::DEFAULT_MAX_ITERATIONS),
 		  _exponent(Mandelbrot::DEFAULT_EXPONENT)
 	{
@@ -63,7 +63,7 @@ namespace frctl
 		_cs.setArg(9, _exponent);
 
 		_cs.run(cl::NDRange(width, height));
-		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(uint8_t), pixels.data());
+		_cs.commands.enqueueReadBuffer(pixelsBuffer, CL_TRUE, 0, pixels.size() * sizeof(float), pixels.data());
 		texture = ezgl::Texture(width, height, pixels);
 		fbo.setTexture(texture);
 		requireUpdate = false;
@@ -74,10 +74,9 @@ namespace frctl
 		fbo.bind();
 		fbo.draw();
 		fbo.unbind();
-		ImGui::Begin(name.c_str());
-		ImGui::Text("General");
+		ImGui::Separator();
+		ImGui::Text(name.c_str());
 		requireUpdate |= ImGui::SliderInt("Max Iterations", &_maxIterations, 100, 20000);
 		requireUpdate |= ImGui::SliderInt("Exponent", &_exponent, 1, 20);
-		ImGui::End();
 	}
 }

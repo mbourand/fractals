@@ -16,7 +16,7 @@ namespace frctl
 		ezgl::ComputeShader _cs;
 
 	public:
-		Julia(std::vector<uint8_t>& pixels);
+		Julia(std::vector<float>& pixels);
 		Julia(const Julia& other);
 		Julia& operator=(const Julia& other);
 
