@@ -9,7 +9,7 @@ namespace frctl
 		: Fractal("Phoenix", pixels), _maxIterations(Phoenix::DEFAULT_MAX_ITERATIONS), _c(Phoenix::DEFAULT_C),
 		  _p(Phoenix::DEFAULT_P)
 	{
-		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/phoenix.cl"}, "compute_fractal");
+		_cs = ezgl::ComputeShader({"shaders/utils.cl", "shaders/phoenix.cl"}, "compute_fractal");
 	}
 
 	Phoenix::Phoenix(const Phoenix& other) : Fractal(other.name, other.pixels) { *this = other; }

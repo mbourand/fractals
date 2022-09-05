@@ -9,7 +9,7 @@ namespace frctl
 		: Fractal("Mandelbrot", pixels), _maxIterations(Mandelbrot::DEFAULT_MAX_ITERATIONS),
 		  _exponent(Mandelbrot::DEFAULT_EXPONENT)
 	{
-		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/mandelbrot.cl"}, "compute_fractal");
+		_cs = ezgl::ComputeShader({"shaders/utils.cl", "shaders/mandelbrot.cl"}, "compute_fractal");
 	}
 
 	Mandelbrot::Mandelbrot(const Mandelbrot& other) : Fractal(other.name, other.pixels) { *this = other; }

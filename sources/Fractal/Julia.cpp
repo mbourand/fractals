@@ -8,7 +8,7 @@ namespace frctl
 	Julia::Julia(std::vector<float>& pixels)
 		: Fractal("Julia", pixels), _maxIterations(Julia::DEFAULT_MAX_ITERATIONS), _c(Julia::DEFAULT_C)
 	{
-		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/julia.cl"}, "compute_fractal");
+		_cs = ezgl::ComputeShader({"shaders/utils.cl", "shaders/julia.cl"}, "compute_fractal");
 	}
 
 	Julia::Julia(const Julia& other) : Fractal(other.name, other.pixels) { *this = other; }

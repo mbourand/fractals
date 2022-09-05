@@ -114,10 +114,30 @@ namespace ezgl
 
 	void Window::centerCursor() { glfwSetCursorPos(_window, _width / 2, _height / 2); }
 
-	unsigned int Window::getWidth() { return _width; }
-	unsigned int Window::getHeight() { return _height; }
-	void Window::setWidth(unsigned int width) { _width = width; }
-	void Window::setHeight(unsigned int height) { _height = height; };
+	unsigned int Window::getWidth()
+	{
+		glfwGetWindowSize(_window, reinterpret_cast<int*>(&_width), reinterpret_cast<int*>(&_height));
+		return _width;
+	}
+
+	unsigned int Window::getHeight()
+	{
+		glfwGetWindowSize(_window, reinterpret_cast<int*>(&_width), reinterpret_cast<int*>(&_height));
+		return _height;
+	}
+
+	void Window::setWidth(unsigned int width)
+	{
+		_width = width;
+		glfwSetWindowSize(_window, _width, _height);
+	}
+
+	void Window::setHeight(unsigned int height)
+	{
+		_height = height;
+		glfwSetWindowSize(_window, _width, _height);
+	}
+
 	bool Window::mouseIsOnImGuiElement() { return ImGui::GetIO().WantCaptureMouse; };
 	GLFWwindow* Window::getPtr() { return _window; }
 }

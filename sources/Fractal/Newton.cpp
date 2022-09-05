@@ -8,7 +8,7 @@ namespace frctl
 	Newton::Newton(std::vector<float>& pixels)
 		: Fractal("Newton", pixels), _maxIterations(Newton::DEFAULT_MAX_ITERATIONS), _a(Newton::DEFAULT_A)
 	{
-		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/newton.cl"}, "compute_fractal");
+		_cs = ezgl::ComputeShader({"shaders/utils.cl", "shaders/newton.cl"}, "compute_fractal");
 		_points.push_back({1, 0});
 		_points.push_back({-.5, 0.86602});
 		_points.push_back({-.5, -0.86602});

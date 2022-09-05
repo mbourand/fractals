@@ -11,7 +11,7 @@ namespace frctl
 		: Fractal("Buddhabrot", pixels), _maxIterations(Buddhabrot::DEFAULT_MAX_ITERATIONS),
 		  _nbPoints(Buddhabrot::DEFAULT_POINT_AMOUNT), _brightness(Buddhabrot::DEFAULT_BRIGHTNESS)
 	{
-		_cs = ezgl::ComputeShader({"../../shaders/utils.cl", "../../shaders/buddhabrot.cl"}, "compute_fractal");
+		_cs = ezgl::ComputeShader({"shaders/utils.cl", "shaders/buddhabrot.cl"}, "compute_fractal");
 	}
 
 	Buddhabrot::Buddhabrot(const Buddhabrot& other) : Fractal(other.name, other.pixels) { *this = other; }
@@ -135,7 +135,6 @@ namespace frctl
 		requireUpdate |= preset("30M Points", 5000, 30000000, 7.0f);
 		ImGui::SameLine();
 		requireUpdate |= preset("50M Points", 5000, 50000000, 4.2f);
-		ImGui::SameLine();
 		requireUpdate |= preset("100M Points", 5000, 100000000, 2.1f);
 		ImGui::SameLine();
 		requireUpdate |= preset("200M Points", 5000, 200000000, 1.05f);
